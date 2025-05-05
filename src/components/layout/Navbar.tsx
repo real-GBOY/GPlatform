@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Menu, X, BookOpen, LogOut, User, ShoppingCart } from "lucide-react";
+import { Menu, X, BookOpen, LogOut, User } from "lucide-react";
 import { useAuth } from "../../services/AuthContext";
 
 const Navbar = () => {
@@ -38,15 +38,22 @@ const Navbar = () => {
 								className='inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 border-b-2 border-transparent hover:border-teal-500'>
 								الكورسات
 							</Link>
+
+							{/* Conditionally render Dashboard link if user is an assistant */}
+							{user?.role === "assistant" && (
+								<Link
+									to='/dashboard'
+									className='inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 border-b-2 border-transparent hover:border-teal-500'>
+									لوحة التحكم
+								</Link>
+							)}
 						</div>
 					</div>
 
 					<div className='hidden md:flex md:items-center md:space-x-4'>
 						{user ? (
 							<div className='flex items-center space-x-4'>
-								<div className='flex items-center space-x-2'>
-								
-								</div>
+								<div className='flex items-center space-x-2'></div>
 								<button
 									onClick={handleLogout}
 									className='ml-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500'>
@@ -94,6 +101,16 @@ const Navbar = () => {
 							onClick={() => setIsMenuOpen(false)}>
 							جميع الكورسات
 						</Link>
+
+						{/* Conditionally render Dashboard link if user is an assistant */}
+						{user?.role === "assistant" && (
+							<Link
+								to='/dashboard'
+								className='block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50'
+								onClick={() => setIsMenuOpen(false)}>
+								لوحة التحكم
+							</Link>
+						)}
 					</div>
 
 					<div className='pt-4 pb-3 border-t border-gray-200'>
