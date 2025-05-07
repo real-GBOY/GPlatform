@@ -10,6 +10,10 @@ import AllCourses from "./pages/Courses/AllCourses";
 import CourseDetails from "./pages/Courses/CourseDetails";
 import { AuthProvider } from "./services/AuthContext";
 import ProtectedRoute from "./components/common/ProtectedRoute";
+import AssistantDashboard from "./Assisstant/AssisstantDashboard";
+
+// Add this import or create this component
+// import Dashboard from "./pages/Dashboard";
 
 function AppRoutes() {
 	return (
@@ -17,6 +21,14 @@ function AppRoutes() {
 			<Route path='/' element={<Layout />}>
 				<Route index element={<LandingPage />} />
 				<Route path='auth' element={<AuthPage />} />
+				<Route
+					path='dashboard'
+					element={
+						<ProtectedRoute allowedRoles={["Teacher"]}>
+							{/* Replace with your actual Dashboard component */}
+							 <AssistantDashboard />						</ProtectedRoute>
+					}
+				/>
 				<Route
 					path='all-courses'
 					element={

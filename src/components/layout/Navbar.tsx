@@ -39,8 +39,8 @@ const Navbar = () => {
 								الكورسات
 							</Link>
 
-							{/* Conditionally render Dashboard link if user is an assistant */}
-							{user?.role === "assistant" && (
+							{/* Conditionally render Dashboard link if user is an assistant or teacher */}
+							{(user?.role === "assistant" || user?.role === "teacher") && (
 								<Link
 									to='/dashboard'
 									className='inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 border-b-2 border-transparent hover:border-teal-500'>
@@ -102,8 +102,8 @@ const Navbar = () => {
 							جميع الكورسات
 						</Link>
 
-						{/* Conditionally render Dashboard link if user is an assistant */}
-						{user?.role === "assistant" && (
+						{/* Conditionally render Dashboard link if user is an assistant or teacher */}
+						{(user?.role === "assistant" || user?.role === "teacher") && (
 							<Link
 								to='/dashboard'
 								className='block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50'
