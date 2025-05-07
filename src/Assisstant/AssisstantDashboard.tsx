@@ -28,11 +28,12 @@ const AssistantDashboard = () => {
 
 	const lessonStatusData = [
 		{ name: "Published", value: 45 },
-		{ name: "Pending", value: 25 },
 		{ name: "Rejected", value: 10 },
+		{ name: "Pending", value: 25 },
+		{ name: "Mohsen", value: 10 },
 	];
 
-	const COLORS = ["#0d9488", "#f59e0b", "#ef4444"];
+	const COLORS = ["#0d9488", "#f59e0b", "#ef4444","#6366f1"];
 
 	const statsCards = [
 		{

@@ -89,7 +89,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 			setUser({ token: newToken, role });
 			console.log("Login successful:", { token: "REDACTED", role });
-			navigate("/");
+			//! Redirect based on role
+			if (role === "Teacher") {
+				navigate("/dashboard");
+			} else if (role === "Student") {
+				navigate("/");
+			}
 		} catch (err: any) {
 			console.error("Login error:", err);
 			// More specific error messages

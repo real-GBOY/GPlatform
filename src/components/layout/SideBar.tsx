@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { FaBook, FaMoneyBill, FaPeopleGroup } from "react-icons/fa6";
 import { useLocation } from "react-router-dom";
 import {
 	Home,
@@ -30,43 +31,34 @@ interface SidebarProps {
 	userRole?: string;
 }
 
-const Sidebar = ({
-	userName = "Admin User",
-	userRole = "Administrator",
-}: SidebarProps) => {
+const Sidebar = ({}: SidebarProps) => {
 	const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
 	const location = useLocation();
 
 	const navItems: NavItem[] = [
 		{
-			name: "Dashboard",
+			name: "لوحة التحكم",
 			icon: <Home />,
 			path: "/dashboard",
 			active: location.pathname === "/" || location.pathname === "/dashboard",
 		},
 		{
-			name: "Lessons",
-			icon: <BookOpen />,
-			path: "/lessons",
-			active: location.pathname === "/lessons",
+			name: "الطلاب",
+			icon: <FaPeopleGroup />,
+			path: "students",
+			active: location.pathname === "/students",
 		},
 		{
-			name: "Teachers",
-			icon: <Users />,
+			name: "الكورسات",
+			icon: <FaBook />,
 			path: "/teachers",
 			active: location.pathname === "/teachers",
 		},
 		{
-			name: "Analytics",
-			icon: <BarChart2 />,
+			name: "المدفوعات",
+			icon: <FaMoneyBill />,
 			path: "/analytics",
 			active: location.pathname === "/analytics",
-		},
-		{
-			name: "Settings",
-			icon: <Settings />,
-			path: "/settings",
-			active: location.pathname === "/settings",
 		},
 	];
 
@@ -89,9 +81,11 @@ const Sidebar = ({
 						transition={{ delay: 0.2 }}
 						className='flex items-center'>
 						<div className='h-8 w-8 rounded-md bg-teal-600 flex items-center justify-center'>
-							<span className='text-white font-bold'>ED</span>
+							<span className='text-white font-bold'>GB</span>
 						</div>
-						<span className='ml-3 font-semibold text-gray-800'>EduReview</span>
+						<span className='ml-3 font-semibold text-gray-800 '>
+							منصه تعليمية
+						</span>
 					</motion.div>
 				)}
 				<button
@@ -106,35 +100,6 @@ const Sidebar = ({
 			</div>
 
 			{/* User Profile */}
-			<div className='p-5 border-b border-gray-100'>
-				{!isCollapsed ? (
-					<div className='flex items-center'>
-						<div className='h-10 w-10 rounded-full bg-teal-100 flex items-center justify-center'>
-							<span className='text-teal-600 font-medium'>
-								{userName
-									.split(" ")
-									.map((name) => name[0])
-									.join("")}
-							</span>
-						</div>
-						<div className='ml-3'>
-							<p className='text-sm font-medium text-gray-800'>{userName}</p>
-							<p className='text-xs text-gray-500'>{userRole}</p>
-						</div>
-					</div>
-				) : (
-					<div className='flex justify-center'>
-						<div className='h-10 w-10 rounded-full bg-teal-100 flex items-center justify-center'>
-							<span className='text-teal-600 font-medium'>
-								{userName
-									.split(" ")
-									.map((name) => name[0])
-									.join("")}
-							</span>
-						</div>
-					</div>
-				)}
-			</div>
 
 			{/* Navigation */}
 			<nav className='flex-1 py-4 overflow-y-auto'>
@@ -169,34 +134,6 @@ const Sidebar = ({
 					))}
 				</ul>
 			</nav>
-
-			{/* Notifications & Messages */}
-			{!isCollapsed && (
-				<div className='px-5 py-4 border-t border-gray-100'>
-					<div className='flex justify-between mb-3'>
-						<a
-							href='#'
-							className='flex items-center text-gray-600 hover:text-teal-600'>
-							<Bell size={20} />
-							<span className='ml-3 text-sm'>Notifications</span>
-						</a>
-						<span className='bg-teal-600 text-white text-xs px-2 py-1 rounded-full'>
-							3
-						</span>
-					</div>
-					<div className='flex justify-between'>
-						<a
-							href='#'
-							className='flex items-center text-gray-600 hover:text-teal-600'>
-							<MessageSquare size={20} />
-							<span className='ml-3 text-sm'>Messages</span>
-						</a>
-						<span className='bg-teal-600 text-white text-xs px-2 py-1 rounded-full'>
-							5
-						</span>
-					</div>
-				</div>
-			)}
 
 			{/* Logout */}
 			<div className='p-5 border-t border-gray-100'>

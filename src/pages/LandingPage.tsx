@@ -25,7 +25,7 @@ const LandingPage = () => {
 
 	return (
 		<div className='min-h-screen'>
-			<Sidebar />
+	
 			{/* Hero Section */}
 			<section className='bg-gradient-to-b from-teal-600 to-teal-800 text-white py-16 md:py-24'>
 				<div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
