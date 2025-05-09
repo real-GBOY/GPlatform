@@ -6,6 +6,7 @@ import { Bell, Search, User } from "lucide-react";
 
 import Sidebar from "../components/layout/SideBar";
 import AssistantDashboard from "./AssisstantDashboard";
+import AssisstantCourses from "./AssisstantCourses";
 
 
 // Define prop types for the DashboardLayout component
@@ -76,6 +77,7 @@ const DashboardLayout = ({
 						</div>
 
 						{children || <AssistantDashboard />}
+						<AssisstantCourses/>
 					</div>
 				</main>
 			</div>

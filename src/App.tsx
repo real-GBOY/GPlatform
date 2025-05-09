@@ -13,6 +13,7 @@ import ProtectedRoute from "./components/common/ProtectedRoute";
 import AssistantDashboard from "./Assisstant/AssisstantDashboard";
 import DashboardLayout from "./Assisstant/DashboardLayout";
 import StudentTables from "./Assisstant/StudentsTable";
+import AssisstantCourses from "./Assisstant/AssisstantCourses";
 
 // Import teacher-specific dashboard pages
 // import LessonsPage from "./Assisstant/pages/LessonsPage";
@@ -58,11 +59,21 @@ function AppRoutes() {
 				}
 			/>
 			<Route
-				path='/students'
+				path='/Assisstant-students'
 				element={
 					<ProtectedRoute allowedRoles={["Teacher"]}>
 						<DashboardLayout>
 							<StudentTables />
+						</DashboardLayout>
+					</ProtectedRoute>
+				}
+			/>
+			<Route
+				path='/Assisstant-courses'
+				element={
+					<ProtectedRoute allowedRoles={["Teacher"]}>
+						<DashboardLayout>
+						<AssisstantCourses/>
 						</DashboardLayout>
 					</ProtectedRoute>
 				}
