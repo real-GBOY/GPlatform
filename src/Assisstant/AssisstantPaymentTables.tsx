@@ -1,16 +1,8 @@
 /** @format */
 
-import React, { useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import {
-	DollarSign,
-	ArrowUpRight,
-	ArrowDownRight,
-	Calendar,
-	Search,
-	Download,
-	Filter,
-} from "lucide-react";
+import { DollarSign, Search, Download, Filter } from "lucide-react";
 
 const recentPayments = [
 	{
