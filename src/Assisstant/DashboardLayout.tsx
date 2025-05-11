@@ -77,7 +77,6 @@ const DashboardLayout = ({
 						</div>
 
 						{children || <AssistantDashboard />}
-						<AssisstantCourses/>
 					</div>
 				</main>
 			</div>

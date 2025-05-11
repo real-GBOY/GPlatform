@@ -44,7 +44,7 @@ const Sidebar = ({}: SidebarProps) => {
 		{
 			name: "المدفوعات",
 			icon: <FaMoneyBill size={18} />,
-			path: "/analytics",
+			path: "/Assisstant-payments",
 		},
 	];
 

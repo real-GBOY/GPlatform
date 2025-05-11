@@ -14,6 +14,7 @@ import AssistantDashboard from "./Assisstant/AssisstantDashboard";
 import DashboardLayout from "./Assisstant/DashboardLayout";
 import StudentTables from "./Assisstant/StudentsTable";
 import AssisstantCourses from "./Assisstant/AssisstantCourses";
+import AssistantPaymentTables from "./Assisstant/AssisstantPaymentTables";
 
 // Import teacher-specific dashboard pages
 // import LessonsPage from "./Assisstant/pages/LessonsPage";
@@ -73,7 +74,17 @@ function AppRoutes() {
 				element={
 					<ProtectedRoute allowedRoles={["Teacher"]}>
 						<DashboardLayout>
-						<AssisstantCourses/>
+							<AssisstantCourses />
+						</DashboardLayout>
+					</ProtectedRoute>
+				}
+			/>
+			<Route
+				path='/Assisstant-payments'
+				element={
+					<ProtectedRoute allowedRoles={["Teacher"]}>
+						<DashboardLayout>
+							<AssistantPaymentTables />
 						</DashboardLayout>
 					</ProtectedRoute>
 				}
