@@ -93,7 +93,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 			if (role === "Teacher") {
 				navigate("/dashboard");
 			} else if (role === "Student") {
-				navigate("/");
+				navigate("/student-dashboard");
 			}
 		} catch (err: any) {
 			console.error("Login error:", err);

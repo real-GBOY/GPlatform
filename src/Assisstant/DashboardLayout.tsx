@@ -7,7 +7,6 @@ import { Bell, Search, User } from "lucide-react";
 import Sidebar from "../components/layout/SideBar";
 import AssistantDashboard from "./AssisstantDashboard";
 
-
 // Define prop types for the DashboardLayout component
 interface DashboardLayoutProps {
 	children?: ReactNode;

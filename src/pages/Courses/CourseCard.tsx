@@ -48,7 +48,7 @@ function CourseCard({ title, description, image, price, id }: CourseCardProps) {
 					</div>
 				</div>
 
-				<Link to={`/AllCourses/${id}`}> 
+				<Link to={`/all-courses/${id}`}> 
 					<button className='w-full bg-teal-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-teal-700 transition-colors duration-200 flex items-center justify-center gap-2'>
 						<BookOpen className='h-5 w-5' />
 						Enroll Now
