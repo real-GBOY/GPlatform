@@ -30,6 +30,8 @@ import StudentDetails from "./Assisstant/StudentDetails";
 import CourseReview from "./Assisstant/CourseReview";
 import ExamManagement from "./Assisstant/ExamManagement";
 import Exams from "./Students/pages/Exams";
+import Pricing from "./pages/Pricing";
+import SubscriptionManagement from "./components/subscription/SubscriptionManagement";
 
 function AppRoutes() {
 	return (
@@ -38,6 +40,7 @@ function AppRoutes() {
 			<Route path='/' element={<Layout />}>
 				<Route index element={<LandingPage />} />
 				<Route path='auth' element={<AuthPage />} />
+				<Route path='pricing' element={<Pricing />} />
 				<Route
 					path='all-courses'
 					element={
@@ -164,6 +167,16 @@ function AppRoutes() {
 					<ProtectedRoute allowedRoles={["Student"]}>
 						<StudentDashboardLayout>
 							<HelpCenter />
+						</StudentDashboardLayout>
+					</ProtectedRoute>
+				}
+			/>
+			<Route
+				path='/dashboard/subscription'
+				element={
+					<ProtectedRoute allowedRoles={["Student"]}>
+						<StudentDashboardLayout>
+							<SubscriptionManagement />
 						</StudentDashboardLayout>
 					</ProtectedRoute>
 				}

@@ -16,7 +16,7 @@ interface AuthContextType {
 
 interface JwtPayload {
 	role: string;
-	[key: string]: any;
+	// Add other JWT payload fields as needed
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -89,11 +89,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 			setUser({ token: newToken, role });
 			console.log("Login successful:", { token: "REDACTED", role });
-			//! Redirect based on role
+
+			// Redirect based on role
 			if (role === "Teacher") {
-				navigate("/dashboard");
+				navigate("/assistant");
 			} else if (role === "Student") {
-				navigate("/student-dashboard");
+				navigate("/dashboard");
 			}
 		} catch (err: any) {
 			console.error("Login error:", err);

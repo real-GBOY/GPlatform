@@ -2,8 +2,16 @@
 
 import { useState, ReactNode } from "react";
 import { motion } from "framer-motion";
-import { Bell, Search, BookOpen, Calendar, GraduationCap } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import {
+	Bell,
+	Search,
+	BookOpen,
+	Calendar,
+	GraduationCap,
+	LogOut,
+} from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../services/AuthContext";
 
 import StudentSidebar from "../components/layout/StudentSidebar";
 import StudentDashboard from "./StudentDashboard";
@@ -22,6 +30,8 @@ const StudentDashboardLayout = ({
 }: StudentDashboardLayoutProps) => {
 	const [searchQuery, setSearchQuery] = useState<string>("");
 	const location = useLocation();
+	const navigate = useNavigate();
+	const { logout } = useAuth();
 
 	const navTabs = [
 		{
@@ -41,6 +51,11 @@ const StudentDashboardLayout = ({
 		},
 	];
 
+	const handleLogout = () => {
+		logout();
+		navigate("/");
+	};
+
 	return (
 		<div className='flex h-screen bg-gray-50' dir='rtl'>
 			{/* Student Sidebar */}
@@ -57,6 +72,15 @@ const StudentDashboardLayout = ({
 					</div>
 				</div>
 				<StudentSidebar />
+				{/* Logout Button */}
+				<div className='p-4 border-t border-gray-200'>
+					<button
+						onClick={handleLogout}
+						className='w-full flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-red-600 hover:text-red-700 hover:bg-red-50 rounded-md transition-colors'>
+						<LogOut size={18} />
+						تسجيل الخروج
+					</button>
+				</div>
 			</div>
 
 			{/* Main Content */}
