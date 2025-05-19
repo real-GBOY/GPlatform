@@ -20,65 +20,65 @@ const StudentSidebar = () => {
 
 	const navItems = [
 		{
-			section: "Learning",
+			section: "التعلم",
 			items: [
 				{
-					name: "My Courses",
+					name: "دوراتي",
 					path: "/dashboard/courses",
 					icon: <BookOpen className='h-5 w-5' />,
 				},
 				{
-					name: "Live Sessions",
+					name: "الجلسات المباشرة",
 					path: "/dashboard/live-sessions",
 					icon: <GraduationCap className='h-5 w-5' />,
 				},
 				{
-					name: "Schedule",
+					name: "الجدول الزمني",
 					path: "/dashboard/schedule",
 					icon: <Calendar className='h-5 w-5' />,
 				},
 			],
 		},
 		{
-			section: "Progress",
+			section: "التقدم",
 			items: [
 				{
-					name: "Learning Path",
+					name: "مسار التعلم",
 					path: "/dashboard/learning-path",
 					icon: <Clock className='h-5 w-5' />,
 				},
 				{
-					name: "Certificates",
+					name: "الشهادات",
 					path: "/dashboard/certificates",
 					icon: <BookMarked className='h-5 w-5' />,
 				},
 			],
 		},
 		{
-			section: "Communication",
+			section: "التواصل",
 			items: [
 				{
-					name: "Messages",
+					name: "الرسائل",
 					path: "/dashboard/messages",
 					icon: <MessageSquare className='h-5 w-5' />,
 				},
 				{
-					name: "Notifications",
+					name: "الإشعارات",
 					path: "/dashboard/notifications",
 					icon: <Bell className='h-5 w-5' />,
 				},
 			],
 		},
 		{
-			section: "Support",
+			section: "الدعم",
 			items: [
 				{
-					name: "Settings",
+					name: "الإعدادات",
 					path: "/dashboard/settings",
 					icon: <Settings className='h-5 w-5' />,
 				},
 				{
-					name: "Help Center",
+					name: "مركز المساعدة",
 					path: "/dashboard/help",
 					icon: <HelpCircle className='h-5 w-5' />,
 				},
@@ -87,7 +87,7 @@ const StudentSidebar = () => {
 	];
 
 	return (
-		<nav className='flex flex-col px-4 py-6'>
+		<nav className='flex flex-col px-4 py-6' dir='rtl'>
 			{navItems.map((section, index) => (
 				<div key={index} className='mb-6'>
 					<h3 className='px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider'>
@@ -106,7 +106,7 @@ const StudentSidebar = () => {
 								{item.icon}
 								{item.name}
 								{location.pathname === item.path && (
-									<ChevronLeft className='ml-auto h-5 w-5' />
+									<ChevronLeft className='mr-auto h-5 w-5 rotate-180' />
 								)}
 							</Link>
 						))}

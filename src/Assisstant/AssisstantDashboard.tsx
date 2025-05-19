@@ -18,47 +18,47 @@ import { Eye, BookCheck, Users, Award } from "lucide-react";
 const AssistantDashboard = () => {
 	// Static data for charts
 	const reviewData = [
-		{ name: "Jan", reviews: 65 },
-		{ name: "Feb", reviews: 85 },
-		{ name: "Mar", reviews: 73 },
-		{ name: "Apr", reviews: 92 },
-		{ name: "May", reviews: 78 },
-		{ name: "Jun", reviews: 95 },
+		{ name: "يناير", reviews: 65 },
+		{ name: "فبراير", reviews: 85 },
+		{ name: "مارس", reviews: 73 },
+		{ name: "أبريل", reviews: 92 },
+		{ name: "مايو", reviews: 78 },
+		{ name: "يونيو", reviews: 95 },
 	];
 
 	const lessonStatusData = [
-		{ name: "Published", value: 45 },
-		{ name: "Rejected", value: 10 },
-		{ name: "Pending", value: 25 },
-		{ name: "Mohsen", value: 10 },
+		{ name: "منشور", value: 45 },
+		{ name: "مرفوض", value: 10 },
+		{ name: "قيد المراجعة", value: 25 },
+		{ name: "محسن", value: 10 },
 	];
 
-	const COLORS = ["#0d9488", "#f59e0b", "#ef4444","#6366f1"];
+	const COLORS = ["#0d9488", "#f59e0b", "#ef4444", "#6366f1"];
 
 	const statsCards = [
 		{
-			title: "Total Reviews",
+			title: "إجمالي المراجعات",
 			value: "487",
 			icon: <Eye className='h-6 w-6 text-teal-600' />,
 			change: "+12.5%",
 			positive: true,
 		},
 		{
-			title: "Approved Lessons",
+			title: "الدروس المعتمدة",
 			value: "245",
 			icon: <BookCheck className='h-6 w-6 text-green-600' />,
 			change: "+8.2%",
 			positive: true,
 		},
 		{
-			title: "Active Teachers",
+			title: "المعلمون النشطون",
 			value: "32",
 			icon: <Users className='h-6 w-6 text-amber-600' />,
 			change: "+5.1%",
 			positive: true,
 		},
 		{
-			title: "Completion Rate",
+			title: "معدل الإكمال",
 			value: "94%",
 			icon: <Award className='h-6 w-6 text-indigo-600' />,
 			change: "+2.3%",
@@ -70,43 +70,43 @@ const AssistantDashboard = () => {
 	const recentLessons = [
 		{
 			id: "1",
-			title: "Introduction to React",
-			authorName: "John Doe",
-			status: "published",
+			title: "مقدمة في React",
+			authorName: "أحمد محمد",
+			status: "منشور",
 			createdAt: "2024-02-20",
 		},
 		{
 			id: "2",
-			title: "Advanced JavaScript Concepts",
-			authorName: "Jane Smith",
-			status: "pending",
+			title: "مفاهيم JavaScript المتقدمة",
+			authorName: "سارة أحمد",
+			status: "قيد المراجعة",
 			createdAt: "2024-02-19",
 		},
 		{
 			id: "3",
-			title: "CSS Grid Mastery",
-			authorName: "Mike Johnson",
-			status: "rejected",
+			title: "إتقان CSS Grid",
+			authorName: "محمد علي",
+			status: "مرفوض",
 			createdAt: "2024-02-18",
 		},
 		{
 			id: "4",
-			title: "TypeScript Fundamentals",
-			authorName: "Sarah Wilson",
-			status: "published",
+			title: "أساسيات TypeScript",
+			authorName: "فاطمة حسن",
+			status: "منشور",
 			createdAt: "2024-02-17",
 		},
 		{
 			id: "5",
-			title: "Node.js Basics",
-			authorName: "David Brown",
-			status: "pending",
+			title: "أساسيات Node.js",
+			authorName: "علي محمود",
+			status: "قيد المراجعة",
 			createdAt: "2024-02-16",
 		},
 	];
 
 	return (
-		<div className='space-y-8'>
+		<div className='space-y-8' dir='rtl'>
 			{/* Stats Cards */}
 			<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
 				{statsCards.map((card, index) => (
@@ -134,14 +134,14 @@ const AssistantDashboard = () => {
 			</div>
 
 			{/* Charts Grid */}
-			<div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
+			<div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
 				{/* Review Trend Chart */}
 				<motion.div
 					initial={{ opacity: 0, y: 20 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ delay: 0.4 }}
 					className='bg-white rounded-lg shadow-sm p-6'>
-					<h3 className='text-lg font-semibold mb-6'>Review Trends</h3>
+					<h3 className='text-lg font-semibold mb-6'>اتجاهات المراجعة</h3>
 					<div className='h-80'>
 						<ResponsiveContainer width='100%' height='100%'>
 							<LineChart data={reviewData}>
@@ -167,9 +167,7 @@ const AssistantDashboard = () => {
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ delay: 0.5 }}
 					className='bg-white rounded-lg shadow-sm p-6'>
-					<h3 className='text-lg font-semibold mb-6'>
-						Lesson Status Distribution
-					</h3>
+					<h3 className='text-lg font-semibold mb-6'>توزيع حالة الدروس</h3>
 					<div className='h-80'>
 						<ResponsiveContainer width='100%' height='100%'>
 							<PieChart>
@@ -196,7 +194,7 @@ const AssistantDashboard = () => {
 							{lessonStatusData.map((entry, index) => (
 								<div key={entry.name} className='flex items-center'>
 									<div
-										className='w-3 h-3 rounded-full mr-2'
+										className='w-3 h-3 rounded-full ml-2'
 										style={{ backgroundColor: COLORS[index] }}
 									/>
 									<span className='text-sm text-gray-600'>{entry.name}</span>
@@ -214,25 +212,25 @@ const AssistantDashboard = () => {
 				transition={{ delay: 0.6 }}
 				className='bg-white rounded-lg shadow-sm overflow-hidden'>
 				<div className='p-6'>
-					<h3 className='text-lg font-semibold mb-6'>Recent Reviews</h3>
+					<h3 className='text-lg font-semibold mb-6'>المراجعات الأخيرة</h3>
 					<div className='overflow-x-auto'>
 						<table className='min-w-full divide-y divide-gray-200'>
 							<thead className='bg-gray-50'>
 								<tr>
-									<th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
-										Lesson Title
+									<th className='px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider'>
+										عنوان الدرس
 									</th>
-									<th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
-										Teacher
+									<th className='px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider'>
+										المعلم
 									</th>
-									<th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
-										Status
+									<th className='px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider'>
+										الحالة
 									</th>
-									<th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
-										Date
+									<th className='px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider'>
+										التاريخ
 									</th>
 									<th className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'>
-										Actions
+										الإجراءات
 									</th>
 								</tr>
 							</thead>
@@ -252,18 +250,17 @@ const AssistantDashboard = () => {
 										<td className='px-6 py-4 whitespace-nowrap'>
 											<span
 												className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-													lesson.status === "published"
+													lesson.status === "منشور"
 														? "bg-green-100 text-green-800"
-														: lesson.status === "rejected"
+														: lesson.status === "مرفوض"
 														? "bg-red-100 text-red-800"
 														: "bg-yellow-100 text-yellow-800"
 												}`}>
-												{lesson.status.charAt(0).toUpperCase() +
-													lesson.status.slice(1)}
+												{lesson.status}
 											</span>
 										</td>
 										<td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
-											{new Date(lesson.createdAt).toLocaleDateString()}
+											{new Date(lesson.createdAt).toLocaleDateString("ar-SA")}
 										</td>
 										<td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center'>
 											<div className='flex items-center justify-center space-x-3'>

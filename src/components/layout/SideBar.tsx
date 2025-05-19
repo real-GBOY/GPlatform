@@ -1,27 +1,37 @@
 /** @format */
 
 import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import { FaBook, FaMoneyBill, FaPeopleGroup } from "react-icons/fa6";
-import { Link, NavLink, useLocation } from "react-router-dom";
-import { Home, LogOut, Menu, ChevronLeft } from "lucide-react";
-import { useAuth } from "../../services/AuthContext"; // Adjust the import path as necessary
-// Define interface for navigation items
+import {
+	Home,
+	Users,
+	BookOpen,
+	DollarSign,
+	Settings,
+	HelpCircle,
+	Menu,
+	ChevronLeft,
+	LogOut,
+} from "lucide-react";
+import { useAuth } from "../../services/AuthContext";
+
+interface SidebarProps {
+	userName?: string;
+	userRole?: string;
+}
+
 interface NavItem {
 	name: string;
 	icon: JSX.Element;
 	path: string;
 }
 
-// Define props interface for Sidebar component
-interface SidebarProps {
-	userName?: string;
-	userRole?: string;
-}
-
-const Sidebar = ({}: SidebarProps) => {
+const Sidebar = ({
+	userName = "سارة أحمد",
+	userRole = "معلمة",
+}: SidebarProps) => {
 	const { logout } = useAuth();
-
 	const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
 	const location = useLocation();
 
@@ -29,22 +39,32 @@ const Sidebar = ({}: SidebarProps) => {
 		{
 			name: "لوحة التحكم",
 			icon: <Home size={20} />,
-			path: "/dashboard",
+			path: "/assistant",
 		},
 		{
 			name: "الطلاب",
-			icon: <FaPeopleGroup size={18} />,
-			path: "/Assisstant-students",
+			icon: <Users size={18} />,
+			path: "/assistant/students",
 		},
 		{
 			name: "الكورسات",
-			icon: <FaBook size={18} />,
-			path: "/Assisstant-courses",
+			icon: <BookOpen size={18} />,
+			path: "/assistant/courses",
 		},
 		{
 			name: "المدفوعات",
-			icon: <FaMoneyBill size={18} />,
-			path: "/Assisstant-payments",
+			icon: <DollarSign size={18} />,
+			path: "/assistant/payments",
+		},
+		{
+			name: "الإعدادات",
+			icon: <Settings size={18} />,
+			path: "/assistant/settings",
+		},
+		{
+			name: "المساعدة",
+			icon: <HelpCircle size={18} />,
+			path: "/assistant/help",
 		},
 	];
 
@@ -57,7 +77,8 @@ const Sidebar = ({}: SidebarProps) => {
 			initial={{ width: 280 }}
 			animate={{ width: isCollapsed ? 80 : 280 }}
 			transition={{ duration: 0.3, ease: "easeInOut" }}
-			className='h-screen bg-white border-r border-gray-200 flex flex-col'>
+			className='h-screen bg-white border-l border-gray-200 flex flex-col'
+			dir='rtl'>
 			{/* Logo & Toggle */}
 			<div className='flex items-center justify-between p-5 border-b border-gray-100'>
 				{!isCollapsed && (
@@ -66,7 +87,7 @@ const Sidebar = ({}: SidebarProps) => {
 						animate={{ opacity: 1 }}
 						transition={{ delay: 0.2 }}
 						className='flex items-center'>
-						<Link to='/dashboard' className='flex items-center'>
+						<Link to='/assistant' className='flex items-center'>
 							<div className='h-8 w-8 rounded-md bg-teal-600 flex items-center justify-center'>
 								<span className='text-white font-bold'>GB</span>
 							</div>
@@ -87,67 +108,50 @@ const Sidebar = ({}: SidebarProps) => {
 				</button>
 			</div>
 
-			{/* Navigation */}
-			<nav className='flex-1 py-4 overflow-y-auto'>
-				<ul className='space-y-1'>
-					{navItems.map((item, index) => {
-						// Check if the current path matches this item's path
-						const isActive =
-							location.pathname === item.path ||
-							(item.path === "/dashboard" &&
-								(location.pathname === "/" ||
-									location.pathname === "/dashboard"));
+			{/* User Profile */}
+			{!isCollapsed && (
+				<div className='p-4 border-b border-gray-100'>
+					<div className='flex items-center'>
+						<div className='h-10 w-10 rounded-full bg-teal-600 flex items-center justify-center text-white font-bold'>
+							{userName.charAt(0)}
+						</div>
+						<div className='mr-3'>
+							<h3 className='text-sm font-medium text-gray-800'>{userName}</h3>
+							<p className='text-xs text-gray-500'>{userRole}</p>
+						</div>
+					</div>
+				</div>
+			)}
 
-						return (
-							<li key={index}>
-								<NavLink
-									to={item.path}
-									className={({ isActive }) => `
-                    flex items-center ${
-											isCollapsed ? "justify-center" : "justify-between"
-										} 
-                    px-5 py-3 
-                    ${
-											isActive
-												? "bg-teal-50 text-teal-600"
-												: "text-gray-600 hover:bg-gray-50"
-										}
-                    transition-colors
-                  `}>
-									{({ isActive }) => (
-										<>
-											<div className='flex items-center'>
-												<span
-													className={`${
-														isActive ? "text-teal-600" : "text-gray-500"
-													}`}>
-													{item.icon}
-												</span>
-												{!isCollapsed && (
-													<span className='mr-3 font-medium'>{item.name}</span>
-												)}
-											</div>
-											{!isCollapsed && isActive && (
-												<div className='h-2 w-2 rounded-full bg-teal-600'></div>
-											)}
-										</>
-									)}
-								</NavLink>
-							</li>
-						);
-					})}
+			{/* Navigation */}
+			<nav className='flex-1 overflow-y-auto py-4'>
+				<ul className='space-y-1 px-3'>
+					{navItems.map((item) => (
+						<li key={item.path}>
+							<Link
+								to={item.path}
+								className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+									location.pathname === item.path
+										? "bg-teal-50 text-teal-600"
+										: "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+								}`}>
+								<span className='ml-3'>{item.icon}</span>
+								{!isCollapsed && <span>{item.name}</span>}
+							</Link>
+						</li>
+					))}
 				</ul>
 			</nav>
 
-			{/* Logout */}
-			<div className='p-5 border-t border-gray-100'>
+			{/* Logout Button */}
+			<div className='p-4 border-t border-gray-100'>
 				<button
 					onClick={logout}
-					className={`flex items-center ${
-						isCollapsed ? "justify-center" : ""
-					} text-gray-600 hover:text-red-600 transition-colors`}>
-					<LogOut size={20} />
-					{!isCollapsed && <span className='ml-3'>تسجيل الخروج</span>}
+					className='flex items-center w-full px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-md transition-colors'>
+					<span className='ml-3'>
+						<LogOut size={18} />
+					</span>
+					{!isCollapsed && <span>تسجيل الخروج</span>}
 				</button>
 			</div>
 		</motion.div>

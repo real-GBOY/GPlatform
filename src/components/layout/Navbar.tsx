@@ -1,7 +1,7 @@
 /** @format */
 
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Menu, X, BookOpen, LogOut, User } from "lucide-react";
 import { useAuth } from "../../services/AuthContext";
 
@@ -9,11 +9,48 @@ const Navbar = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const { user, logout } = useAuth();
 	const navigate = useNavigate();
+	const location = useLocation();
+
+	// Effect to handle automatic navigation based on user role
+	useEffect(() => {
+		if (user) {
+			if (user.role === "Teacher" && location.pathname === "/auth") {
+				navigate("/assistant");
+			} else if (user.role === "Student" && location.pathname === "/auth") {
+				navigate("/dashboard");
+			}
+		}
+	}, [user, location.pathname, navigate]);
 
 	const handleLogout = () => {
 		logout();
 		setIsMenuOpen(false);
+		navigate("/");
 	};
+
+	const navLinks = [
+		{
+			name: "الرئيسية",
+			path: "/",
+		},
+		{
+			name: "الكورسات",
+			path: "/all-courses",
+		},
+	];
+
+	// Add dashboard link based on user role
+	if (user?.role === "Teacher") {
+		navLinks.push({
+			name: "لوحة التحكم",
+			path: "/assistant",
+		});
+	} else if (user?.role === "Student") {
+		navLinks.push({
+			name: "لوحة التحكم",
+			path: "/dashboard",
+		});
+	}
 
 	return (
 		<nav className='bg-white shadow-sm'>
@@ -28,59 +65,59 @@ const Navbar = () => {
 						</Link>
 
 						<div className='hidden md:ml-6 md:flex md:space-x-8'>
-							<Link
-								to='/'
-								className='inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 border-b-2 border-transparent hover:border-teal-500'>
-								الرئيسية
-							</Link>
-							<Link
-								to='/all-courses'
-								className='inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 border-b-2 border-transparent hover:border-teal-500'>
-								الكورسات
-							</Link>
-
-							{/* Conditionally render Dashboard link if user is an assistant or teacher */}
-							{(user?.role === "assistant" || user?.role === "teacher") && (
+							{navLinks.map((link) => (
 								<Link
-									to='/dashboard'
-									className='inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 border-b-2 border-transparent hover:border-teal-500'>
-									لوحة التحكم
+									key={link.path}
+									to={link.path}
+									className={`inline-flex items-center px-1 pt-1 text-sm font-medium ${
+										location.pathname === link.path
+											? "text-teal-600 border-b-2 border-teal-600"
+											: "text-gray-900 border-b-2 border-transparent hover:border-teal-500"
+									}`}>
+									{link.name}
 								</Link>
-							)}
+							))}
 						</div>
 					</div>
 
-					<div className='hidden md:flex md:items-center md:space-x-4'>
-						{user ? (
-							<div className='flex items-center space-x-4'>
-								<div className='flex items-center space-x-2'></div>
-								<button
-									onClick={handleLogout}
-									className='ml-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500'>
-									<LogOut className='h-4 w-4 mr-2' />
-									تسجيل الخروج
-								</button>
-							</div>
-						) : (
-							<Link
-								to='/auth'
-								className='inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500'>
-								تسجيل الدخول
-							</Link>
-						)}
-					</div>
-
+					{/* Mobile menu button */}
 					<div className='flex items-center md:hidden'>
 						<button
 							onClick={() => setIsMenuOpen(!isMenuOpen)}
 							className='inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-teal-500'>
-							<span className='sr-only'>Open main menu</span>
+							<span className='sr-only'>فتح القائمة</span>
 							{isMenuOpen ? (
 								<X className='block h-6 w-6' />
 							) : (
 								<Menu className='block h-6 w-6' />
 							)}
 						</button>
+					</div>
+
+					{/* Desktop profile menu */}
+					<div className='hidden md:flex md:items-center md:mr-6'>
+						{user ? (
+							<div className='flex items-center space-x-4'>
+								<Link
+									to={user.role === "Teacher" ? "/assistant" : "/dashboard"}
+									className='flex items-center text-sm font-medium text-gray-700 hover:text-gray-900'>
+									<User className='h-5 w-5 ml-1' />
+									{user.role === "Teacher" ? "المعلم" : "الطالب"}
+								</Link>
+								<button
+									onClick={handleLogout}
+									className='flex items-center text-sm font-medium text-gray-700 hover:text-gray-900'>
+									<LogOut className='h-5 w-5 ml-1' />
+									تسجيل الخروج
+								</button>
+							</div>
+						) : (
+							<Link
+								to='/auth'
+								className='text-sm font-medium text-teal-600 hover:text-teal-700'>
+								تسجيل الدخول
+							</Link>
+						)}
 					</div>
 				</div>
 			</div>
@@ -89,60 +126,44 @@ const Navbar = () => {
 			{isMenuOpen && (
 				<div className='md:hidden'>
 					<div className='pt-2 pb-3 space-y-1'>
-						<Link
-							to='/'
-							className='block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50'
-							onClick={() => setIsMenuOpen(false)}>
-							الرئيسية
-						</Link>
-						<Link
-							to='/all-courses'
-							className='block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50'
-							onClick={() => setIsMenuOpen(false)}>
-							جميع الكورسات
-						</Link>
-
-						{/* Conditionally render Dashboard link if user is an assistant or teacher */}
-						{(user?.role === "assistant" || user?.role === "teacher") && (
+						{navLinks.map((link) => (
 							<Link
-								to='/dashboard'
-								className='block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50'
+								key={link.path}
+								to={link.path}
+								className={`block px-3 py-2 rounded-md text-base font-medium ${
+									location.pathname === link.path
+										? "bg-teal-50 text-teal-700"
+										: "text-gray-700 hover:text-gray-900 hover:bg-gray-50"
+								}`}
 								onClick={() => setIsMenuOpen(false)}>
-								لوحة التحكم
+								{link.name}
 							</Link>
-						)}
+						))}
 					</div>
-
-					<div className='pt-4 pb-3 border-t border-gray-200'>
-						{user ? (
-							<div className='space-y-3'>
-								<div className='flex items-center px-4'>
-									<div className='flex-shrink-0'>
-										<div className='h-10 w-10 rounded-full bg-teal-100 flex items-center justify-center'>
-											<User className='h-6 w-6 text-teal-600' />
-										</div>
+					{user && (
+						<div className='pt-4 pb-3 border-t border-gray-200'>
+							<div className='flex items-center px-4'>
+								<div className='flex-shrink-0'>
+									<User className='h-10 w-10 text-gray-400' />
+								</div>
+								<div className='mr-3'>
+									<div className='text-base font-medium text-gray-800'>
+										{user.role === "Teacher" ? "المعلم" : "الطالب"}
+									</div>
+									<div className='text-sm font-medium text-gray-500'>
+										{user.role === "Teacher" ? "معلم" : "طالب"}
 									</div>
 								</div>
-								<div className='px-2'>
-									<button
-										onClick={handleLogout}
-										className='w-full flex items-center justify-center px-4 py-2 border border-transparent text-base font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700'>
-										<LogOut className='h-5 w-5 mr-2' />
-										تسجيل الخروج
-									</button>
-								</div>
 							</div>
-						) : (
-							<div className='px-2'>
-								<Link
-									to='/auth'
-									className='block w-full text-center px-4 py-2 border border-transparent text-base font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700'
-									onClick={() => setIsMenuOpen(false)}>
-									تسجيل الدخول
-								</Link>
+							<div className='mt-3 space-y-1'>
+								<button
+									onClick={handleLogout}
+									className='block w-full text-right px-4 py-2 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50'>
+									تسجيل الخروج
+								</button>
 							</div>
-						)}
-					</div>
+						</div>
+					)}
 				</div>
 			)}
 		</nav>

@@ -1,11 +1,35 @@
 /** @format */
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import {
+	User,
+	Mail,
+	Phone,
+	MapPin,
+	Edit,
+	Trash2,
+	AlertCircle,
+} from "lucide-react";
+
+interface Student {
+	id: number;
+	name: string;
+	email: string;
+	phone: string;
+	address: string;
+	parentPhone: string;
+	courses: number;
+}
 
 export default function StudentTables() {
 	const [searchTerm, setSearchTerm] = useState("");
-
-	const students = [
+	const [showDeleteConfirm, setShowDeleteConfirm] = useState<number | null>(
+		null
+	);
+	const [students, setStudents] = useState<Student[]>([
 		{
+			id: 1,
 			name: "أحمد محمد",
 			email: "ahmed@email.com",
 			phone: "01012345678",
@@ -14,6 +38,7 @@ export default function StudentTables() {
 			courses: 5,
 		},
 		{
+			id: 2,
 			name: "سارة علي",
 			email: "sara@email.com",
 			phone: "01123456789",
@@ -22,6 +47,7 @@ export default function StudentTables() {
 			courses: 3,
 		},
 		{
+			id: 3,
 			name: "محمد خالد",
 			email: "mohamed@email.com",
 			phone: "01234567890",
@@ -29,7 +55,8 @@ export default function StudentTables() {
 			parentPhone: "01299887766",
 			courses: 4,
 		},
-	];
+	]);
+	const navigate = useNavigate();
 
 	// Filter students based on search term
 	const filteredStudents = students.filter(
@@ -39,6 +66,31 @@ export default function StudentTables() {
 			student.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
 			student.phone.includes(searchTerm)
 	);
+
+	const handleViewStudent = (studentId: number) => {
+		navigate(`/assistant/students/${studentId}`);
+	};
+
+	const handleEditStudent = (studentId: number) => {
+		navigate(`/assistant/students/${studentId}/edit`);
+	};
+
+	const handleDeleteStudent = async (studentId: number) => {
+		try {
+			// Add API call here to delete student
+			await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate API call
+
+			// Update local state by removing the deleted student
+			setStudents((prevStudents) =>
+				prevStudents.filter((student) => student.id !== studentId)
+			);
+
+			setShowDeleteConfirm(null);
+		} catch (error) {
+			console.error("Error deleting student:", error);
+			// You might want to show an error message to the user here
+		}
+	};
 
 	return (
 		<div className='container mx-auto px-4 py-6'>
@@ -104,9 +156,9 @@ export default function StudentTables() {
 				{/* Mobile Card View */}
 				<div className='sm:hidden p-4 space-y-4'>
 					{filteredStudents.length > 0 ? (
-						filteredStudents.map((student, index) => (
+						filteredStudents.map((student) => (
 							<div
-								key={index}
+								key={student.id}
 								className='bg-white rounded-lg border border-gray-200 p-4 space-y-3 hover:shadow-md transition-shadow duration-200'>
 								<div className='flex items-center justify-between'>
 									<h3 className='font-semibold text-gray-800'>
@@ -186,10 +238,8 @@ export default function StudentTables() {
 								</div>
 								<div className='flex justify-end gap-2'>
 									<button
+										onClick={() => handleViewStudent(student.id)}
 										className='text-blue-600 hover:text-blue-800 hover:bg-blue-50 p-2 rounded-full transition-colors duration-150'
-										onClick={() => {
-											/* Handle view */
-										}}
 										aria-label='عرض'>
 										<svg
 											className='w-5 h-5'
@@ -211,42 +261,16 @@ export default function StudentTables() {
 										</svg>
 									</button>
 									<button
+										onClick={() => handleEditStudent(student.id)}
 										className='text-gray-500 hover:text-blue-600 hover:bg-blue-50 p-2 rounded-full transition-colors duration-150'
-										onClick={() => {
-											/* Handle edit */
-										}}
 										aria-label='تعديل'>
-										<svg
-											className='w-5 h-5'
-											fill='none'
-											stroke='currentColor'
-											viewBox='0 0 24 24'>
-											<path
-												strokeLinecap='round'
-												strokeLinejoin='round'
-												strokeWidth={2}
-												d='M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z'
-											/>
-										</svg>
+										<Edit className='w-5 h-5' />
 									</button>
 									<button
+										onClick={() => setShowDeleteConfirm(student.id)}
 										className='text-gray-500 hover:text-red-600 hover:bg-red-50 p-2 rounded-full transition-colors duration-150'
-										onClick={() => {
-											/* Handle delete */
-										}}
 										aria-label='حذف'>
-										<svg
-											className='w-5 h-5'
-											fill='none'
-											stroke='currentColor'
-											viewBox='0 0 24 24'>
-											<path
-												strokeLinecap='round'
-												strokeLinejoin='round'
-												strokeWidth={2}
-												d='M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16'
-											/>
-										</svg>
+										<Trash2 className='w-5 h-5' />
 									</button>
 								</div>
 							</div>
@@ -292,9 +316,9 @@ export default function StudentTables() {
 						</thead>
 						<tbody className='divide-y divide-gray-200'>
 							{filteredStudents.length > 0 ? (
-								filteredStudents.map((student, index) => (
+								filteredStudents.map((student) => (
 									<tr
-										key={index}
+										key={student.id}
 										className='bg-white hover:bg-gray-50 transition-colors duration-150'>
 										<th
 											scope='row'
@@ -385,10 +409,8 @@ export default function StudentTables() {
 										<td className='px-6 py-4 text-right whitespace-nowrap'>
 											<div className='flex justify-end gap-2'>
 												<button
+													onClick={() => handleViewStudent(student.id)}
 													className='text-blue-600 hover:text-blue-800 hover:bg-blue-50 p-2 rounded-full transition-colors duration-150'
-													onClick={() => {
-														/* Handle view */
-													}}
 													aria-label='عرض'>
 													<svg
 														className='w-5 h-5'
@@ -410,42 +432,16 @@ export default function StudentTables() {
 													</svg>
 												</button>
 												<button
+													onClick={() => handleEditStudent(student.id)}
 													className='text-gray-500 hover:text-blue-600 hover:bg-blue-50 p-2 rounded-full transition-colors duration-150'
-													onClick={() => {
-														/* Handle edit */
-													}}
 													aria-label='تعديل'>
-													<svg
-														className='w-5 h-5'
-														fill='none'
-														stroke='currentColor'
-														viewBox='0 0 24 24'>
-														<path
-															strokeLinecap='round'
-															strokeLinejoin='round'
-															strokeWidth={2}
-															d='M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z'
-														/>
-													</svg>
+													<Edit className='w-5 h-5' />
 												</button>
 												<button
+													onClick={() => setShowDeleteConfirm(student.id)}
 													className='text-gray-500 hover:text-red-600 hover:bg-red-50 p-2 rounded-full transition-colors duration-150'
-													onClick={() => {
-														/* Handle delete */
-													}}
 													aria-label='حذف'>
-													<svg
-														className='w-5 h-5'
-														fill='none'
-														stroke='currentColor'
-														viewBox='0 0 24 24'>
-														<path
-															strokeLinecap='round'
-															strokeLinejoin='round'
-															strokeWidth={2}
-															d='M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16'
-														/>
-													</svg>
+													<Trash2 className='w-5 h-5' />
 												</button>
 											</div>
 										</td>
@@ -482,6 +478,35 @@ export default function StudentTables() {
 					</div>
 				</div>
 			</div>
+
+			{/* Delete Confirmation Modal */}
+			{showDeleteConfirm && (
+				<div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4'>
+					<div className='bg-white rounded-lg p-6 max-w-md w-full'>
+						<div className='flex items-center mb-4'>
+							<AlertCircle className='w-6 h-6 text-red-500 ml-2' />
+							<h3 className='text-lg font-medium text-gray-900'>
+								تأكيد حذف الطالب
+							</h3>
+						</div>
+						<p className='text-gray-500 mb-6'>
+							هل أنت متأكد من حذف هذا الطالب؟ لا يمكن التراجع عن هذا الإجراء.
+						</p>
+						<div className='flex justify-end gap-3'>
+							<button
+								onClick={() => setShowDeleteConfirm(null)}
+								className='px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50'>
+								إلغاء
+							</button>
+							<button
+								onClick={() => handleDeleteStudent(showDeleteConfirm)}
+								className='px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700'>
+								حذف
+							</button>
+						</div>
+					</div>
+				</div>
+			)}
 		</div>
 	);
 }

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import {
 	BookOpen,
 	AlertCircle,
@@ -12,8 +13,22 @@ import {
 } from "lucide-react";
 import axios from "axios";
 
+interface Course {
+	id: number;
+	name: string;
+	description: string;
+	duration: string;
+	enrollmentCount: number;
+	status: "pending" | "approved" | "rejected";
+	thumbnail?: string;
+	teacher: string;
+	createdAt: string;
+	updatedAt: string;
+}
+
 function AssistantCourses() {
-	const [courses, setCourses] = useState([]);
+	const navigate = useNavigate();
+	const [courses, setCourses] = useState<Course[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState("");
 
@@ -31,7 +46,6 @@ function AssistantCourses() {
 
 				console.log("✅ Courses fetched successfully:", response.data);
 				setCourses(response.data);
-				0;
 			} catch (error: any) {
 				console.error("🚨 Error fetching courses:", error);
 				if (error.response) {
@@ -56,6 +70,10 @@ function AssistantCourses() {
 		fetchCourses();
 	}, []);
 
+	const handleViewCourse = (courseId: number) => {
+		navigate(`/assistant/courses/${courseId}`);
+	};
+
 	if (loading) {
 		return (
 			<div className='flex items-center justify-center min-h-[400px]'>
@@ -79,14 +97,12 @@ function AssistantCourses() {
 	}
 
 	return (
-		<div className='space-y-6'>
+		<div className='space-y-6' dir='rtl'>
 			<div className='flex justify-between items-center'>
-				<h2 className='text-2xl font-bold text-gray-900'>
-					Course Review Queue
-				</h2>
+				<h2 className='text-2xl font-bold text-gray-900'>مراجعة الدورات</h2>
 				<div className='flex items-center space-x-2'>
 					<span className='text-sm text-gray-500'>
-						{courses.length} courses pending review
+						{courses.length} دورات تحتاج للمراجعة
 					</span>
 				</div>
 			</div>
@@ -95,9 +111,9 @@ function AssistantCourses() {
 				<div className='text-center py-12 bg-white rounded-lg shadow-sm'>
 					<BookOpen className='h-12 w-12 text-gray-400 mx-auto mb-4' />
 					<h3 className='text-lg font-medium text-gray-900 mb-2'>
-						No Courses to Review
+						لا توجد دورات للمراجعة
 					</h3>
-					<p className='text-gray-500'>All courses have been reviewed.</p>
+					<p className='text-gray-500'>تمت مراجعة جميع الدورات.</p>
 				</div>
 			) : (
 				<motion.div
@@ -105,7 +121,7 @@ function AssistantCourses() {
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
 					transition={{ duration: 0.3 }}>
-					{courses.map((course: any) => (
+					{courses.map((course) => (
 						<motion.div
 							key={course.id}
 							className='bg-white rounded-lg shadow-sm overflow-hidden border border-gray-100 hover:shadow-md transition-shadow'
@@ -133,25 +149,29 @@ function AssistantCourses() {
 									{course.name}
 								</h3>
 								<p className='text-gray-600 text-sm mb-4 line-clamp-2'>
-									{course.description || "No description available"}
+									{course.description || "لا يوجد وصف متاح"}
 								</p>
 
 								<div className='flex items-center justify-between text-sm text-gray-500 mb-4'>
 									<div className='flex items-center'>
-										<Clock className='h-4 w-4 mr-1' />
-										<span>{course.duration || "Not specified"}</span>
+										<Clock className='h-4 w-4 ml-1' />
+										<span>{course.duration || "غير محدد"}</span>
 									</div>
 									<div className='flex items-center'>
-										<Users className='h-4 w-4 mr-1' />
-										<span>{course.enrollmentCount || 0} enrolled</span>
+										<Users className='h-4 w-4 ml-1' />
+										<span>{course.enrollmentCount || 0} طالب</span>
 									</div>
 								</div>
 
 								<div className='flex justify-between items-center'>
-									<button className='text-teal-600 hover:text-teal-700 font-medium text-sm'>
-										Review Course
+									<button
+										onClick={() => handleViewCourse(course.id)}
+										className='text-teal-600 hover:text-teal-700 font-medium text-sm'>
+										مراجعة الدورة
 									</button>
-									<button className='p-2 text-gray-400 hover:text-teal-600 rounded-full hover:bg-teal-50 transition-colors'>
+									<button
+										onClick={() => handleViewCourse(course.id)}
+										className='p-2 text-gray-400 hover:text-teal-600 rounded-full hover:bg-teal-50 transition-colors'>
 										<Edit className='h-4 w-4' />
 									</button>
 								</div>
