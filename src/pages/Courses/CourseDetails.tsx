@@ -6,7 +6,6 @@ import { Star, Clock, Users, BookOpen, ArrowLeft } from "lucide-react";
 import CourseService from "../../services/CourseService";
 import CourseReview from "../../components/courses/CourseReview";
 import { Course, Review } from "../../types/course";
-import Navigation from "../../components/common/Navigation";
 
 const CourseDetails: React.FC = () => {
 	const { id } = useParams<{ id: string }>();
@@ -93,45 +92,45 @@ const CourseDetails: React.FC = () => {
 
 	if (loading) {
 		return (
-			<>
-				<Navigation />
+			<div className='min-h-screen bg-gray-50'>
 				<div className='flex justify-center items-center h-64'>
 					<div className='animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500'></div>
 				</div>
-			</>
+			</div>
 		);
 	}
 
 	if (error) {
 		return (
-			<>
-				<Navigation />
-				<div className='bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded'>
-					{error}
+			<div className='min-h-screen bg-gray-50'>
+				<div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12'>
+					<div className='bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded'>
+						{error}
+					</div>
 				</div>
-			</>
+			</div>
 		);
 	}
 
 	if (!course) {
 		return (
-			<>
-				<Navigation />
-				<div className='text-center py-12'>
-					<h3 className='text-lg font-medium text-gray-900'>
-						Course Not Found
-					</h3>
-					<p className='mt-2 text-sm text-gray-500'>
-						The course you're looking for doesn't exist or has been removed.
-					</p>
+			<div className='min-h-screen bg-gray-50'>
+				<div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12'>
+					<div className='text-center py-12'>
+						<h3 className='text-lg font-medium text-gray-900'>
+							Course Not Found
+						</h3>
+						<p className='mt-2 text-sm text-gray-500'>
+							The course you're looking for doesn't exist or has been removed.
+						</p>
+					</div>
 				</div>
-			</>
+			</div>
 		);
 	}
 
 	return (
-		<>
-			<Navigation />
+		<div className='min-h-screen bg-gray-50'>
 			<div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12'>
 				<button
 					onClick={() => navigate(-1)}
@@ -249,7 +248,7 @@ const CourseDetails: React.FC = () => {
 					)}
 				</div>
 			</div>
-		</>
+		</div>
 	);
 };
 
